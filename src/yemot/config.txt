@@ -1,29 +1,14 @@
-# הגדרות שלוחת API בימות המשיח
-
-# סוג השלוחה
 type=api
-
-# כתובת ה-API
-api_link=https://script.google.com/macros/s/AKfycbzJUNHe-oqQsS8uOEaqHIesbwJh54WNUsDGq1Twd4WsFjuP4f5vxJg9DK6BsXLHS-3K/exec
-
-# הגדרות בסיסיות
-api_url_post=no
+api_link=https://hook.integrator.boost.space/7q9am87ltqk52mm49rpp3xecur23a5ci
+api_method=GET
+api_params=ApiPhone=[ApiPhone]&ApiDID=[ApiDID]&ApiCallId=[ApiCallId]&ApiExtension=[ApiExtension]&ApiTime=[ApiTime]
 api_timeout=60
 api_log=yes
+api_phone_send=yes
+api_did_send=yes
+api_call_id_send=yes
+api_extension_send=yes
+api_time_send=yes
 
-# פרמטרים לשליחה
-api_params=ApiPhone=[ApiPhone]
-
-# קוד השלוחה
-read=ApiAnswer
-if ApiAnswer=api_answer_OK
-  goto_folder=/3
-endif
-if ApiAnswer=api_answer_ERROR
-  hangup
-endif
-
-# טיפול במקרה של אין תשובה מהשרת
-if ApiAnswer=
-  hangup
-endif 
+api_answer_OK=go_to_folder=/1
+api_answer_ERROR=go_to_folder=hangup 
