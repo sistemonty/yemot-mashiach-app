@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html dir="rtl">
+  <head>
+    <base target="_top">
+    <style>
+      body { font-family: Arial, sans-serif; margin: 20px; }
+      .container { max-width: 800px; margin: 0 auto; }
+      .form-group { margin-bottom: 15px; }
+      input[type="text"] { padding: 5px; width: 200px; }
+      button { padding: 5px 10px; }
+      .number-list { margin-top: 20px; }
+      .number-item { display: flex; justify-content: space-between; padding: 5px 0; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>ניהול מספרים מורשים</h1>
+      
+      <div class="form-group">
+        <input type="text" id="newNumber" placeholder="הכנס מספר טלפון חדש">
+        <button onclick="addNewNumber()">הוסף מספר</button>
+      </div>
+
+      <div class="number-list" id="numberList">
+        <!-- הרשימה תיטען דינמית -->
+      </div>
+    </div>
+
+    <script>
+      // טעינת הרשימה בטעינת הדף
+      function loadNumbers() {
+        google.script.run.withSuccessHandler(displayNumbers).getNumbers();
+      }
+
+      // הצגת המספרים
+      function displayNumbers(numbers) {
+        const list = document.getElementById('numberList');
+        list.innerHTML = '';
+        
+        numbers.forEach(number => {
+          const div = document.createElement('div');
+          div.className = 'number-item';
+          div.innerHTML = `
+            <span>${number}</span>
+            <button onclick="deleteNumber('${number}')">מחק</button>
+          `;
+          list.appendChild(div);
+        });
+      }
+
+      // הוספת מספר חדש
+      function addNewNumber() {
+        const input = document.getElementById('newNumber');
+        const number = input.value.trim();
+        
+        if (number) {
+          google.script.run
+            .withSuccessHandler(() => {
+              input.value = '';
+              loadNumbers();
+            })
+            .addNumber(number);
+        }
+      }
+
+      // מחיקת מספר
+      function deleteNumber(number) {
+        if (confirm('האם אתה בטוח שברצונך למחוק מספר זה?')) {
+          google.script.run
+            .withSuccessHandler(loadNumbers)
+            .deleteNumber(number);
+        }
+      }
+
+      // טעינה ראשונית
+      loadNumbers();
+    </script>
+  </body>
+</html> 
